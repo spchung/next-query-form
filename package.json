@@ -4,23 +4,51 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:mock": "NEXT_PUBLIC_APP_MOCK=true next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "preview": "yarn run build && yarn start",
+    "lint": "next lint",
+    "format": "prettier --write src/",
+    "test": "jest",
+    "story": "storybook dev -p 6006",
+    "story:build": "storybook build",
+    "d:prod": "next build && pm2 start ecosystem.config.js",
+    "d:log": "pm2 log --lines 100",
+    "docker:image": "docker build -t $npm_package_name .",
+    "docker:container": "docker run -dp 127.0.0.1:3000:3000 $npm_package_name",
+    "docker": "yarn run docker:image && yarn run docker:container",
+    "s3:dev:upload": "aws s3 sync assets s3://your-project-name-dev/ --delete --acl public-read --profile your-project-name-dev",
+    "s3:dev:ls": "aws s3 ls s3://your-project-name-dev/ --profile your-project-name-dev",
+    "s3:dev:config": "aws configure list --profile your-project-name-dev",
+    "ui:init": "npx shadcn-ui@latest init",
+    "ui:add": "npx shadcn-ui@latest add"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.0.2",
+    "@tanstack/react-query": "^5.40.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.1.3",
+    "install": "^0.13.0",
+    "lucide-react": "^0.390.0",
+    "next": "14.2.3",
+    "prettier-plugin-tailwindcss": "^0.6.2",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.3"
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@tanstack/react-query-devtools": "^5.0.0-alpha.91",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3"
-  }
+    "typescript": "^5"
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
