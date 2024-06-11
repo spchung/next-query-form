@@ -12,10 +12,15 @@ import { useQueryClient, useQuery } from "@tanstack/react-query"
 import { getPokemonByName } from "@/api/pokemon"
 import { Skeleton } from "@/components/ui/skeleton"
 
+type PokemonCardProps = {
+  isTemp?: boolean;
+} & PokemonInfoModel
+
 export const PokemonCard = ({
   name,
-  url
-}:PokemonInfoModel) => {
+  url,
+  isTemp = false,
+}:PokemonCardProps) => {
   const query = useQuery({
     queryKey: ["pokemon", name],
     queryFn: () => getPokemonByName(name).then((resJson) => {
@@ -25,20 +30,20 @@ export const PokemonCard = ({
 
   const data = query.data
 
-  if (query.isLoading) {
+  if (query.isLoading || isTemp) {
     return (
       <Card className='min-w-[200px] h-[500px]'>
-      <CardHeader>
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-full" />
-      </CardHeader>
-      <CardContent>
-        <Skeleton className="h-[250px] w-full rounded-xl" />
-      </CardContent>
-      <CardFooter>
-      <Skeleton className="h-4 w-[250px]" />
-      </CardFooter>
-    </Card>
+        <CardHeader>
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-[250px] w-full rounded-xl" />
+        </CardContent>
+        <CardFooter>
+        <Skeleton className="h-4 w-[250px]" />
+        </CardFooter>
+      </Card>
     )
   }
 
@@ -53,7 +58,7 @@ export const PokemonCard = ({
   return (
     <Card className='min-w-[200px] h-[500px]'>
       <CardHeader>
-        <CardTitle>{name}</CardTitle>
+        <CardTitle>{name.toLocaleUpperCase()}</CardTitle>
         <CardDescription>Type: {data.types.map((item) => (item.type.name)).join(", ")} </CardDescription>
       </CardHeader>
       <CardContent>
