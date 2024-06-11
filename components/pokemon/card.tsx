@@ -11,15 +11,15 @@ import Image from "next/image"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import { getPokemonByName } from "@/api/pokemon"
 import { Skeleton } from "@/components/ui/skeleton"
-
-type PokemonCardProps = {
-  isTemp?: boolean;
-} & PokemonInfoModel
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import Link from "next/link"
+type PokemonCardProps = React.HTMLProps<HTMLDivElement> & PokemonInfoModel;
 
 export const PokemonCard = ({
   name,
-  url,
-  isTemp = false,
+  id,
+  className,
 }:PokemonCardProps) => {
   const query = useQuery({
     queryKey: ["pokemon", name],
@@ -30,9 +30,9 @@ export const PokemonCard = ({
 
   const data = query.data
 
-  if (query.isLoading || isTemp) {
+  if (query.isLoading) {
     return (
-      <Card className='min-w-[200px] h-[500px]'>
+      <Card className={cn(className,'min-w-[200px] h-[500px]')}>
         <CardHeader>
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-full" />
@@ -65,7 +65,12 @@ export const PokemonCard = ({
         <Image src={data.sprites.front_default} alt={name} width={280} height={280} />
       </CardContent>
       <CardFooter>
-        <p>Height: {data.height}</p>
+        <div className="flex justify-between w-full">
+          <p>Height: {data.height}</p>
+          <Button>
+            <Link href={`/customize/${data.id}`}> Customize </Link>
+            </Button>
+        </div>
       </CardFooter>
     </Card>
   )

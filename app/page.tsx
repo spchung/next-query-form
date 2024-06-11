@@ -1,7 +1,10 @@
-import PokemonLanding from "@/components/pokemon/pokemon-landing"
+import PokemonLanding from "@/components/pokemon/PokemonLanding"
 
 export default function Home() {
   return (
-    <PokemonLanding />
+    <div>
+      <PokemonLanding />
+      {/* your component goes here */}
+    </div>
   )
 }
